@@ -19,12 +19,21 @@ class SwitchNotifier extends StreamNotifier<SwitchState> {
   ///
   /// 3秒後にSwitchをOnにする。
   Future<void> switchOn() async {
-    await Future.delayed(const Duration(seconds: 3));
+    state = const AsyncValue.loading();
+    await ref.read(switchRepositoryProvider).switchOn(documentId: documentId);
+
+    /// SwitchStateを更新する。
     state = AsyncValue.data(SwitchState(isEnabled: true));
+
+    ref.invalidateSelf();
   }
 
   /// SwitchをOffにする。
-  void switchOff() {
+  Future<void> switchOff() async {
+    await ref.read(switchRepositoryProvider).switchOff(documentId: documentId);
+
+    /// SwitchStateを更新する。
     state = AsyncValue.data(SwitchState(isEnabled: false));
+    ref.invalidateSelf();
   }
 }
