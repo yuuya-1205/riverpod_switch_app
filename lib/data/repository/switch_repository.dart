@@ -26,11 +26,15 @@ class SwitchRepository {
 
   Future<void> switchOn({required String documentId}) async {
     await Future.delayed(Duration(seconds: 3));
-    await ref
-        .read(firebaseFirestoreProvider)
-        .collection('switch')
-        .doc(documentId)
-        .set({'isEnabled': true});
+    try {
+      await ref
+          .read(firebaseFirestoreProvider)
+          .collection('switch')
+          .doc(documentId)
+          .set({'isEnabled': true});
+    } catch (e) {
+      throw Exception('Failed to switch on: $e');
+    }
   }
 
   Future<void> switchOff({required String documentId}) async {
