@@ -40,6 +40,8 @@ class SwitchPage extends ConsumerWidget {
                 ),
               ],
             ),
+            const SizedBox(height: 16.0),
+            if (switchState.isEnabled) const Text('使えるよ！'),
           ],
         ),
       ),
